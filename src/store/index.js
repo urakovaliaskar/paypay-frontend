@@ -29,5 +29,8 @@ export default new Vuex.Store({
 			}
 		},
 	},
+	getters: {
+		isAuthenticated: state => !!state.user.id,
+	},
 	modules: {},
 });

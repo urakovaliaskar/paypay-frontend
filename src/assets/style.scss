@@ -1,1 +1,88 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&display=swap');
+
+$font-family-sans-serif: 'Poppins' !default;
+
+// Colors
+$white: #fff !default;
+$gray-100: #f8f9fa !default;
+$gray-200: #e9ecef !default;
+$gray-300: #dee2e6 !default;
+$gray-400: #ced4da !default;
+$gray-500: #adb5bd !default;
+$gray-600: #868e96 !default;
+$gray-700: #495057 !default;
+$gray-800: #343a40 !default;
+$gray-900: #212529 !default;
+$black: #000 !default;
+
+$blue: #007bff !default;
+$indigo: #674eec !default;
+$purple: #8445f7 !default;
+$pink: #ff4169 !default;
+$red: #c4183c !default;
+$orange: #fb7906 !default;
+$yellow: #ffb400 !default;
+$green: #17c671 !default;
+$teal: #1adba2 !default;
+$cyan: #00b8d8 !default;
+
+$colors: () !default;
+$colors: map-merge(
+	(
+		'blue': $blue,
+		'indigo': $indigo,
+		'purple': $purple,
+		'pink': $pink,
+		'red': $red,
+		'orange': $orange,
+		'yellow': $yellow,
+		'green': $green,
+		'teal': $teal,
+		'cyan': $cyan,
+		'white': $white,
+		'gray': $gray-600,
+		'gray-dark': $gray-800,
+	),
+	$colors
+);
+
+// Shards Specific
+$blueish-grey: #5a6169 !default;
+
+$primary: $red !default;
+$secondary: $gray-100 !default;
+$success: $green !default;
+$info: $blue !default;
+$warning: $yellow !default;
+$danger: $red !default;
+$cyan: $cyan !default;
+$light: $gray-100 !default;
+$dark: $gray-800 !default;
+$purple: $purple !default;
+
+$theme-colors: () !default;
+$theme-colors: map-merge(
+	(
+		'primary': $primary,
+		'secondary': $secondary,
+		'success': $success,
+		'info': $info,
+		'warning': $warning,
+		'danger': $danger,
+		'light': $light,
+		'dark': $dark,
+	),
+	$theme-colors
+);
+
+// Body
+
+$body-bg: #edf1f5 !default;
+$body-color: $gray-900 !default;
+
+$navbar-brand-padding-y: 15px;
+
+$card-border-width: 0px !default;
+$card-border-radius: 0px !default;
+
 @import 'bootstrap/scss/bootstrap.scss';
