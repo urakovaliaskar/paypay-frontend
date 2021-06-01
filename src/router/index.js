@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import LoginPage from '@/components/layout/LoginPage';
+import LoginLayout from '@/components/layout/LoginLayout';
 import BasicLayout from '@/components/layout/BasicLayout';
 import Reviews from '@/components/views/Reviews';
 import Users from '@/components/views/Users';
@@ -37,6 +37,7 @@ const routes = [
 				meta: {
 					title: 'Users',
 					forAuth: true,
+					forAdmin: true,
 				},
 			},
 		],
@@ -44,7 +45,7 @@ const routes = [
 	{
 		path: '/login',
 		name: 'login',
-		component: LoginPage,
+		component: LoginLayout,
 		meta: {
 			title: 'Sign In',
 			forAuth: false,

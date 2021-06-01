@@ -18,15 +18,16 @@ Vue.use(VueI18n);
 Vue.component('centered-loader', CenteredLoader);
 
 router.beforeEach((to, from, next) => {
-	if (store.getters.isAuthenticated) {
+	const { isAuthenticated, isAdmin } = store.getters;
+	if (isAuthenticated) {
 		if (to.meta.forAuth) {
-			// if (to.meta.forAdmin && localStorage.getItem('role') == 'admin') {
-			// 	next();
-			// } else if (to.meta.forAdmin && localStorage.getItem('role') == 'user') {
-			// 	next(from);
-			// } else {
-			next();
-			// }
+			if (to.meta.forAdmin && isAdmin) {
+				next();
+			} else if (to.meta.forAdmin && !isAdmin) {
+				next(from);
+			} else {
+				next();
+			}
 		} else {
 			next(from);
 		}

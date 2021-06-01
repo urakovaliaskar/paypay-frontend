@@ -6,7 +6,7 @@
 </template>
 <script>
 import { mapActions } from 'vuex';
-import NavigationBar from './NavigationBar';
+import NavigationBar from '@/components/global/NavigationBar';
 export default {
 	name: 'App',
 	components: { NavigationBar },

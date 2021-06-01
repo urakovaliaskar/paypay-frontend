@@ -17,12 +17,9 @@ export default new Vuex.Store({
 	},
 	mutations: {
 		CURRENT_USER_FETCHED: (state, user) => {
-			state.user.id = user.id;
-			state.user.email = user.email;
-			state.user.firstname = user.firstname;
-			state.user.lastname = user.lastname;
+			state.user = user;
 		},
-		CURRENT_USER_LOGGED_OUT: (state, user) => {
+		CURRENT_USER_LOGGED_OUT: state => {
 			state.token = null;
 			state.user = null;
 		},
@@ -34,16 +31,17 @@ export default new Vuex.Store({
 		},
 	},
 	actions: {
-		login: async ({ commit }, user) => {
+		login: async ({ commit }, credentials) => {
 			try {
 				Vue.axios.defaults.headers.common.Authorization = `Bearer ${localStorage.token}`;
-				const res = await Vue.axios.post('/login', user);
+				const res = await Vue.axios.post('/login', credentials);
 				localStorage.setItem('token', res.data.token);
 				localStorage.setItem('user', JSON.stringify(res.data.user));
 				commit('CURRENT_USER_FETCHED', res.data.user);
 				commit('SET_TOKEN', res.data.token);
-				router.push({ path: '/' });
+				router.push({ name: 'reviews' });
 			} catch (error) {
+				console.log(error);
 				return error?.response?.data;
 			}
 		},
@@ -57,7 +55,7 @@ export default new Vuex.Store({
 	},
 	getters: {
 		isAuthenticated: state => !!state.token,
-		isAdmin: state => state.user.role === 'admin',
+		isAdmin: state => !!(state?.user?.role === 'admin'),
 		user: state => state.user,
 	},
 	modules: {},

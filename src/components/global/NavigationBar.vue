@@ -6,13 +6,16 @@
 			<b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
 			<b-collapse id="nav-collapse" is-nav>
-				<b-navbar-nav v-if="isAdmin">
+				<b-navbar-nav>
 					<b-nav-item
 						:to="{ path: '/reviews' }"
-						:active="$route.name === 'home'"
-						>Home</b-nav-item
+						:active="$route.name === 'reviews'"
+						>Reviews</b-nav-item
 					>
-					<b-nav-item :to="{ path: '/users' }" :active="$route.name === 'users'"
+					<b-nav-item
+						v-if="isAdmin"
+						:to="{ path: '/users' }"
+						:active="$route.name === 'users'"
 						>Users</b-nav-item
 					>
 				</b-navbar-nav>
@@ -20,7 +23,7 @@
 					<b-nav-item-dropdown right>
 						<!-- Using 'button-content' slot -->
 						<template #button-content>
-							<em>{{ user | getFullName }}</em>
+							{{ user | getFullName }}
 						</template>
 						<b-dropdown-item @click.prevent="logout">Sign Out</b-dropdown-item>
 					</b-nav-item-dropdown>
