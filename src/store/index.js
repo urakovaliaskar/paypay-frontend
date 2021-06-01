@@ -14,6 +14,7 @@ export default new Vuex.Store({
 			firstname: '',
 			lastname: '',
 		},
+		error: null,
 	},
 	mutations: {
 		CURRENT_USER_FETCHED: (state, user) => {
@@ -29,6 +30,9 @@ export default new Vuex.Store({
 		SET_TOKEN: (state, token) => {
 			state.token = token;
 		},
+		SET_ERROR: (state, error) => {
+			state.error = error;
+		},
 	},
 	actions: {
 		login: async ({ commit }, credentials) => {
@@ -41,7 +45,7 @@ export default new Vuex.Store({
 				commit('SET_TOKEN', res.data.token);
 				router.push({ name: 'reviews' });
 			} catch (error) {
-				console.log(error);
+				console.error(error);
 				return error?.response?.data;
 			}
 		},
@@ -52,11 +56,21 @@ export default new Vuex.Store({
 			commit('CURRENT_USER_LOGGED_OUT');
 			router.push({ name: 'login' });
 		},
+		getUsers: async ({ commit }, params) => {
+			try {
+				const res = await Vue.axios.get('/users', params);
+				return res.data;
+			} catch (error) {
+				console.error(error);
+				commit('SET_ERROR', error?.response?.data?.message);
+			}
+		},
 	},
 	getters: {
 		isAuthenticated: state => !!state.token,
 		isAdmin: state => !!(state?.user?.role === 'admin'),
 		user: state => state.user,
+		error: state => state.error,
 	},
 	modules: {},
 });
