@@ -4,6 +4,7 @@ import LoginLayout from '@/components/layout/LoginLayout';
 import BasicLayout from '@/components/layout/BasicLayout';
 import Reviews from '@/components/views/Reviews';
 import Users from '@/components/views/Users';
+import User from '@/components/views/User';
 
 Vue.use(VueRouter);
 
@@ -36,6 +37,17 @@ const routes = [
 				component: Users,
 				meta: {
 					title: 'Users',
+					forAuth: true,
+					forAdmin: true,
+				},
+			},
+
+			{
+				path: '/user/:id',
+				name: 'user',
+				component: User,
+				meta: {
+					title: 'User',
 					forAuth: true,
 					forAdmin: true,
 				},

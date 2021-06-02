@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import BootstrapVue from 'bootstrap-vue';
+import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
 import VueI18n from 'vue-i18n';
@@ -13,6 +13,7 @@ import './assets/style.scss';
 Vue.config.productionTip = false;
 
 Vue.use(BootstrapVue);
+Vue.use(BootstrapVueIcons);
 Vue.use(VueAxios, axios);
 Vue.use(VueI18n);
 Vue.component('centered-loader', CenteredLoader);
@@ -48,6 +49,8 @@ if (localStorage?.token) {
 }
 
 Vue.axios.defaults.baseURL = '/api/v1';
+
+document.title = 'Performance Review';
 
 new Vue({
 	router,

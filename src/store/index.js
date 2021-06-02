@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import axios from 'axios';
+import api from '@/api';
 import router from '../router';
 
 Vue.use(Vuex);
@@ -38,7 +38,7 @@ export default new Vuex.Store({
 		login: async ({ commit }, credentials) => {
 			try {
 				Vue.axios.defaults.headers.common.Authorization = `Bearer ${localStorage.token}`;
-				const res = await Vue.axios.post('/login', credentials);
+				const res = await api.login(credentials);
 				localStorage.setItem('token', res.data.token);
 				localStorage.setItem('user', JSON.stringify(res.data.user));
 				commit('CURRENT_USER_FETCHED', res.data.user);
@@ -58,7 +58,43 @@ export default new Vuex.Store({
 		},
 		getUsers: async ({ commit }, params) => {
 			try {
-				const res = await Vue.axios.get('/users', params);
+				const res = await api.fetchUsers(params);
+				return res.data;
+			} catch (error) {
+				console.error(error);
+				commit('SET_ERROR', error?.response?.data?.message);
+			}
+		},
+		getUser: async ({ commit }, params) => {
+			try {
+				const res = await api.fetchUser(params);
+				return res.data;
+			} catch (error) {
+				console.error(error);
+				commit('SET_ERROR', error?.response?.data?.message);
+			}
+		},
+		createUser: async ({ commit }, params) => {
+			try {
+				const res = await api.createUser(params);
+				return res.data;
+			} catch (error) {
+				console.error(error);
+				commit('SET_ERROR', error?.response?.data?.message);
+			}
+		},
+		editUser: async ({ commit }, params) => {
+			try {
+				const res = await api.updateUser(params);
+				return res.data;
+			} catch (error) {
+				console.error(error);
+				commit('SET_ERROR', error?.response?.data?.message);
+			}
+		},
+		deleteUser: async ({ commit }, params) => {
+			try {
+				const res = await api.deleteUser(params);
 				return res.data;
 			} catch (error) {
 				console.error(error);
