@@ -1,7 +1,10 @@
 <template>
 	<div>
-		<b-navbar toggleable="md" variant="primary" type="dark">
-			<b-navbar-brand>PayPay</b-navbar-brand>
+		<b-navbar toggleable="sm" variant="primary" type="dark" small>
+			<b-navbar-brand
+				><span class="brand">PayPay</span>
+				<p class="undertext">Performance review</p></b-navbar-brand
+			>
 
 			<b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -49,4 +52,15 @@ export default {
 	},
 };
 </script>
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.brand {
+	letter-spacing: 1px;
+}
+.undertext {
+	font-size: 0.5rem;
+	margin: 0;
+}
+.navbar-brand {
+	padding: 0;
+}
+</style>

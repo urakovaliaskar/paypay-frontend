@@ -1,46 +1,52 @@
 <template>
 	<div>
-		<b-container class="container mt-4" v-if="!!users.length">
-			<b-card class="card">
-				<div class="header-wrapper mb-4">
-					<!-- <div>Items: {{ modifiedUsers.length }}</div> -->
-					<b-button
-						class="btn btn-create ml-auto"
-						variant="warning"
-						@click="$router.push({ name: 'user', params: { id: 'create' } })"
-						>+ Create User</b-button
+		<b-container class="container mt-4">
+			<b-overlay :show="loading" rounded="sm">
+				<b-card class="card">
+					<b-row class="row">
+						<b-col class="col">
+							<b-button
+								class="btn btn-create"
+								variant="warning"
+								@click="$router.push({ path: '/user/create' })"
+								>+ Create User</b-button
+							>
+						</b-col>
+					</b-row>
+					<b-table
+						id="users-table"
+						striped
+						hover
+						bordered
+						responsive
+						:fields="fields"
+						:items="modifiedUsers"
 					>
-				</div>
-				<b-table
-					id="users-table"
-					striped
-					hover
-					bordered
-					responsive="sm"
-					:fields="fields"
-					:items="modifiedUsers"
-				>
-					<template #cell(actions)="row" v-if="isAdmin">
-						<b-button size="sm" @click="editUser(row.item)" variant="info">
-							<b-icon-pencil></b-icon-pencil> edit
-						</b-button>
-						<b-button
-							size="sm"
-							@click="confirmDeletion(row.item)"
-							variant="danger"
-							class="ml-2"
-						>
-							<b-icon-trash></b-icon-trash> delete
-						</b-button>
-					</template>
-				</b-table>
-				<b-pagination
-					v-model="page"
-					:total-rows="total"
-					:per-page="size"
-					aria-controls="users-table"
-				/>
-			</b-card>
+						<template #cell(actions)="row" v-if="isAdmin">
+							<div class="actions">
+								<b-button size="sm" @click="editUser(row.item)" variant="info">
+									<b-icon-pencil></b-icon-pencil> edit
+								</b-button>
+								<b-button
+									size="sm"
+									@click="confirmDeletion(row.item)"
+									variant="danger"
+									class="ml-2"
+								>
+									<b-icon-trash></b-icon-trash> delete
+								</b-button>
+							</div>
+						</template>
+					</b-table>
+					<b-pagination
+						v-model="page"
+						:total-rows="total"
+						:per-page="size"
+						@change="fetchUsers"
+						aria-controls="users-table"
+					/>
+				</b-card>
+			</b-overlay>
 		</b-container>
 		<b-modal
 			id="delete-confirm"
@@ -65,6 +71,7 @@ export default {
 		total: 0,
 		fields: ['number', 'email', 'name', 'date', 'actions'],
 		selectedUserId: null,
+		loading: true,
 	}),
 	async mounted() {
 		await this.fetchUsers();
@@ -72,17 +79,15 @@ export default {
 	computed: {
 		...mapGetters(['user', 'isAdmin']),
 		modifiedUsers() {
-			return this.users
-				.filter(el => el.id !== this.user.id)
-				.map((el, idx) => {
-					return {
-						id: el.id,
-						number: (this.page - 1) * this.size + idx + 1,
-						email: el.email,
-						name: el.firstname + ' ' + el.lastname,
-						date: format(new Date(el.created_at), 'dd.MM.yyyy'),
-					};
-				});
+			return this.users.map((el, idx) => {
+				return {
+					number: (this.page - 1) * this.size + idx + 1,
+					id: el.id,
+					email: el.email,
+					name: el.fullname,
+					date: format(new Date(el.created_at), 'dd.MM.yyyy'),
+				};
+			});
 		},
 	},
 	methods: {
@@ -99,26 +104,21 @@ export default {
 			this.selectedUserId = null;
 			this.fetchUsers();
 		},
-		async fetchUsers() {
+		async fetchUsers(page) {
+			this.loading = true;
+			if (page) this.page = page;
 			const res = await this.getUsers({ page: this.page - 1, size: this.size });
 			this.users = res.users;
 			this.total = res.total;
+			this.loading = false;
 		},
 	},
 };
 </script>
 <style lang="scss" scoped>
-[aria-colindex='5'] {
-	text-align: center;
-}
-
-.header-wrapper {
+.actions {
 	display: flex;
-	justify-content: space-between;
-	align-items: flex-end;
-}
-
-.pagination {
 	gap: 8px;
+	justify-content: space-around;
 }
 </style>

@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import api from '@/api';
 import router from '../router';
+import ReviewsModule from './reviewsModule';
 
 Vue.use(Vuex);
 
@@ -37,8 +38,8 @@ export default new Vuex.Store({
 	actions: {
 		login: async ({ commit }, credentials) => {
 			try {
-				Vue.axios.defaults.headers.common.Authorization = `Bearer ${localStorage.token}`;
 				const res = await api.login(credentials);
+				Vue.axios.defaults.headers.common.Authorization = `Bearer ${res.data.token}`;
 				localStorage.setItem('token', res.data.token);
 				localStorage.setItem('user', JSON.stringify(res.data.user));
 				commit('CURRENT_USER_FETCHED', res.data.user);
@@ -58,7 +59,7 @@ export default new Vuex.Store({
 		},
 		getUsers: async ({ commit }, params) => {
 			try {
-				const res = await api.fetchUsers(params);
+				const res = await api.user.fetchUsers({ params });
 				return res.data;
 			} catch (error) {
 				console.error(error);
@@ -67,7 +68,7 @@ export default new Vuex.Store({
 		},
 		getUser: async ({ commit }, params) => {
 			try {
-				const res = await api.fetchUser(params);
+				const res = await api.user.fetchUser(params);
 				return res.data;
 			} catch (error) {
 				console.error(error);
@@ -76,7 +77,7 @@ export default new Vuex.Store({
 		},
 		createUser: async ({ commit }, params) => {
 			try {
-				const res = await api.createUser(params);
+				const res = await api.user.createUser(params);
 				return res.data;
 			} catch (error) {
 				console.error(error);
@@ -85,7 +86,7 @@ export default new Vuex.Store({
 		},
 		editUser: async ({ commit }, params) => {
 			try {
-				const res = await api.updateUser(params);
+				const res = await api.user.updateUser(params);
 				return res.data;
 			} catch (error) {
 				console.error(error);
@@ -94,7 +95,16 @@ export default new Vuex.Store({
 		},
 		deleteUser: async ({ commit }, params) => {
 			try {
-				const res = await api.deleteUser(params);
+				const res = await api.user.deleteUser(params);
+				return res.data;
+			} catch (error) {
+				console.error(error);
+				commit('SET_ERROR', error?.response?.data?.message);
+			}
+		},
+		createFeedback: async ({ commit }, params) => {
+			try {
+				const res = await api.feedback.createFeedback(params);
 				return res.data;
 			} catch (error) {
 				console.error(error);
@@ -108,5 +118,7 @@ export default new Vuex.Store({
 		user: state => state.user,
 		error: state => state.error,
 	},
-	modules: {},
+	modules: {
+		reviews: ReviewsModule,
+	},
 });

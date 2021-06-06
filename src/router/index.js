@@ -1,10 +1,20 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import LoginLayout from '@/components/layout/LoginLayout';
-import BasicLayout from '@/components/layout/BasicLayout';
-import Reviews from '@/components/views/Reviews';
-import Users from '@/components/views/Users';
-import User from '@/components/views/User';
+const BasicLayout = () =>
+	import(
+		/* webpackChunkName: "BasicLayout", webpackPreload: true */ '@/components/layout/BasicLayout'
+	);
+const Reviews = () =>
+	import(
+		/* webpackChunkName: "Reviews", webpackPrefetch: true */ '@/components/views/Reviews'
+	);
+const Review = () =>
+	import(/* webpackChunkName: "Review" */ '@/components/views/Review');
+const Users = () =>
+	import(/* webpackChunkName: "Users" */ '@/components/views/Users');
+const User = () =>
+	import(/* webpackChunkName: "User" */ '@/components/views/User');
 
 Vue.use(VueRouter);
 
@@ -28,6 +38,15 @@ const routes = [
 				component: Reviews,
 				meta: {
 					title: 'Reviews',
+					forAuth: true,
+				},
+			},
+			{
+				path: '/review/:id',
+				name: 'review',
+				component: Review,
+				meta: {
+					title: 'Review',
 					forAuth: true,
 				},
 			},
